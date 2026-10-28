@@ -11,7 +11,7 @@ object LocalSafetyClassifier {
         val digits = mapOf('۰' to '0', '۱' to '1', '۲' to '2', '۳' to '3', '۴' to '4', '۵' to '5', '۶' to '6', '۷' to '7', '۸' to '8', '۹' to '9', '٠' to '0', '١' to '1', '٢' to '2', '٣' to '3', '٤' to '4', '٥' to '5', '٦' to '6', '٧' to '7', '٨' to '8', '٩' to '9')
         return Normalizer.normalize(input.lowercase(Locale.ROOT), Normalizer.Form.NFKC)
             .replace('ي','ی').replace('ى','ی').replace('ك','ک').replace('ۀ','ه').replace('ة','ه').replace('ؤ','و').replace('إ','ا').replace('أ','ا').replace('ٱ','ا')
-            .replace("ـ", "").map { digits[it] ?: it }
+            .replace("ـ", "").map { digits[it] ?: it }.joinToString("")
             .replace(Regex("[\u064B-\u065F\u0670]"), "")
             .replace(Regex("""[\u200c\u200d\u200e\u200f\u202a-\u202e\s]+"""), " ")
             .replace(Regex("""[^\p{L}\p{N} ]+"""), " ").replace(Regex("""\s+"""), " ").trim()
