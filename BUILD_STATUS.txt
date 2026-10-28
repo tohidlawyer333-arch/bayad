@@ -1,0 +1,24 @@
+وضعیت اعتبارسنجی و بسته‌بندی — 2026-10-29
+============================================
+
+وضعیت بیلد واقعی
+- این پروژه در این محیط بیلد نشد؛ Java، Gradle و Android SDK نصب نیستند و assembleDebug اجرا نشده است.
+- هیچ ادعایی درباره‌ی موفقیت کامپایل، ساخت APK یا آزمون روی دستگاه وجود ندارد.
+- بیلد واقعی GitHub هنوز اجرا و تأیید نشده است؛ بررسی ایستا سه مانع آشکار Kotlin را یافت که در این نسخه اصلاح شده‌اند:
+  1) رشته‌ی چندخطی HelpDialog در MainActivity.kt به رشته‌ی سه‌تایی Kotlin تبدیل شد.
+  2) Regexهای LocalSafety.kt به raw triple-quoted strings تبدیل شدند تا \s و \p توسط موتور Regex تفسیر شوند.
+  3) حذف نویسه‌ی تطویل در normalize با replace رشته‌ای انجام شد، چون Char خالی در Kotlin معتبر نیست.
+- این اصلاح‌ها فقط از بازبینی ایستا به‌دست آمده‌اند؛ هنوز بیلد و آزمون روی دستگاه تأیید نشده است.
+
+Gradle Wrapper
+- موجود: gradle/wrapper/gradle-wrapper.properties (Gradle 8.7)، gradlew و gradlew.bat؛ gradlew فعلی اسکریپت جایگزین است که Gradle نصب‌شده را فراخوانی می‌کند، نه wrapper استاندارد.
+- مفقود: gradle/wrapper/gradle-wrapper.jar واقعی. فایل gradle-wrapper.jar.note.txt فقط یادداشت متنی است و جایگزین JAR نیست. در /mnt/data و آرشیو ورودی نیز JAR واقعی پیدا نشد؛ JAR ساختگی اضافه نشده است.
+- بنابراین اجرای ./gradlew و workflowای که به wrapper استاندارد متکی باشد با این بسته در حال حاضر مسدود است. workflow نمونه‌ی این بسته Gradle 8.7 را جداگانه provision می‌کند و از `gradle assembleDebug` استفاده می‌کند تا به JAR وابسته نباشد.
+- برای تکمیل wrapper، پس از اصلاح خطاهای کد، Gradle محلی 8.7 را در ریشه‌ی پروژه اجرا کنید: `gradle wrapper --gradle-version 8.7`. JAR و اسکریپت‌های استاندارد تولیدشده را بررسی و commit کنید. سپس `./gradlew --version` و `./gradlew assembleDebug` را اجرا کنید.
+
+فایل‌های پروژه و بازبینی
+- پیکربندی‌های موجود بررسی شدند: settings.gradle.kts، build.gradle.kts، app/build.gradle.kts، gradle.properties، gradle/wrapper/gradle-wrapper.properties، .gitignore، AndroidManifest.xml و themes.xml.
+- سورس‌های موجود: MainActivity.kt، GoalCatalog.kt و LocalSafety.kt. وابستگی‌های Compose/AndroidX در app/build.gradle.kts تعریف شده‌اند؛ برای این وابستگی‌ها فایل سورس/منبع ضروریِ آشکاری که از درخت پروژه غایب باشد، در بازبینی ایستا پیدا نشد. compile/test واقعی انجام نشده است.
+- README.md حفظ شد؛ BUILD_ON_GITHUB.md و .github/workflows/android.yml افزوده شدند؛ این BUILD_STATUS.txt برای ثبت نتیجه‌ی فعلی به‌روزرسانی شد.
+- آرشیو ورودی bayad_android_studio.zip نسخه‌ای ناقص‌تر از سورس بود و GoalCatalog.kt و LocalSafety.kt را شامل نمی‌شد؛ بسته‌ی خروجی بر مبنای پوشه‌ی authoritative یعنی bayad_project ساخته می‌شود.
+- workflow از JDK 17، Gradle 8.7 و Android SDK Platform 35 مطابق تنظیمات اعلام‌شده‌ی پروژه استفاده می‌کند؛ موفقیت آن تا اصلاح موانع Kotlin تأیید نشده است.

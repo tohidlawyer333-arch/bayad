@@ -1,0 +1,3 @@
+توضیح: به دلیل محدودیت شبکه‌ی محیط ساخت، فایل gradle-wrapper.jar در این ZIP قرار نگرفته است.
+هنگام باز کردن پروژه در Android Studio، wrapper به‌صورت خودکار از gradle-wrapper.properties تکمیل می‌شود.
+یا دستور `gradle wrapper --gradle-version 8.7` را یک بار اجرا کنید.
